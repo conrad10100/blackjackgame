@@ -24,23 +24,39 @@ public class Main {
     }
 
     public static Integer dealCard(ArrayList<Integer> mixedDeck){
+
+        ArrayList<Integer> cardJQK = new ArrayList<>();
+        cardJQK.add(11);
+        cardJQK.add(12);
+        cardJQK.add(13);
+        int dealt = mixedDeck.get(0);
+        mixedDeck.remove(0);
+        if (cardJQK.contains(dealt))
+            dealt=10;
+        return dealt;
+    }
+
+    public static boolean result ( int playerSum,  int dealerSum){
+        //First lets calculate player cards score
+        boolean win;
+        System.out.println(playerSum);
+
+        if (playerSum>=dealerSum && playerSum<22) { //checks if user has higher score and isn't busted
+            win = true;
+        }
+
         int dealt = mixedDeck.get(0);
         mixedDeck.remove(0);
         return dealt;
     }
 
-    public static boolean result ( ArrayList<Integer> playerCards,  ArrayList<Integer> dealerCards){
-        //First lets calculate player cards score
-        boolean win = true;
-        int playerSum = 0;
-        int dealerSum = 0;
-        playerSum = playerCards.get(0)+playerCards.get(1);
-        dealerSum = dealerCards.get(0)+dealerCards.get(1);
-        if (playerSum>=dealerSum)
-            win = true;
-        else
-            win = false;
-        return win;
+
+
+    public static Integer sum (ArrayList<Integer> cards){
+        int sum = 0;
+        for (int i = 0; i<cards.size(); i++)
+            sum= cards.get(i) + sum;
+        return sum;
     }
 
     public static void main(String[] args) {
@@ -60,14 +76,33 @@ public class Main {
             givenCard = dealCard(mixedDeck);
             dealerCards.add(givenCard);
         }
-        if ((playerCards.get(0)==(11))||(playerCards.get(0)==(12))||(playerCards.get(0)==(13)))
-            playerCards.set(0,10);
-        if ((playerCards.get(1)==(11))||(playerCards.get(1)==(12))||(playerCards.get(1)==(13)))
-            playerCards.set(1,10);
-
-
+        int playerSum = 0;
+        int dealerSum = 0;
+        playerSum = sum(playerCards);
+        dealerSum = sum(dealerCards);
+        Scanner input = new Scanner(System.in);
         System.out.println("Your cards are: "+playerCards);
         System.out.println("The Dealer's cards are: "+dealerCards.get(0)+", ?");
-        System.out.println(result(playerCards,dealerCards));
-    }
-}
+        System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
+        int hitAgain = input.nextInt();
+        while (hitAgain == 1) {
+            givenCard = dealCard(mixedDeck);
+            playerCards.add(givenCard);
+            System.out.println("Your cards are: "+playerCards);
+            System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
+            hitAgain = input.nextInt();
+        }
+
+        System.out.println("Your cards are: "+playerCards);
+        System.out.println("The Dealer's cards are: "+dealerCards);
+        System.out.println(result(playerSum,dealerSum));
+        if (result(playerSum,dealerSum)==true){
+            System.out.println("You win");
+
+        }
+        else {
+            System.out.println("You lose");
+        }
+        System.out.println("Your cards are: "+playerCards);
+        System.out.println("The Dealer's cards are: "+dealerCards);
+        }

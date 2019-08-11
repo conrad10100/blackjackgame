@@ -24,6 +24,7 @@ public class Main {
     }
 
     public static Integer dealCard(ArrayList<Integer> mixedDeck){
+
         ArrayList<Integer> cardJQK = new ArrayList<>();
         cardJQK.add(11);
         cardJQK.add(12);
@@ -43,10 +44,13 @@ public class Main {
         if (playerSum>=dealerSum && playerSum<22) { //checks if user has higher score and isn't busted
             win = true;
         }
-        else
-            win = false;
-        return win;
+
+        int dealt = mixedDeck.get(0);
+        mixedDeck.remove(0);
+        return dealt;
     }
+
+
 
     public static Integer sum (ArrayList<Integer> cards){
         int sum = 0;
@@ -102,4 +106,3 @@ public class Main {
         System.out.println("Your cards are: "+playerCards);
         System.out.println("The Dealer's cards are: "+dealerCards);
         }
-    }

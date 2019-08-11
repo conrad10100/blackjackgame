@@ -24,7 +24,6 @@ public class Main {
     }
 
     public static Integer dealCard(ArrayList<Integer> mixedDeck){
-
         ArrayList<Integer> cardJQK = new ArrayList<>();
         cardJQK.add(11);
         cardJQK.add(12);
@@ -44,13 +43,10 @@ public class Main {
         if (playerSum>=dealerSum && playerSum<22) { //checks if user has higher score and isn't busted
             win = true;
         }
-
-        int dealt = mixedDeck.get(0);
-        mixedDeck.remove(0);
-        return dealt;
+        else
+            win = false;
+        return win;
     }
-
-
 
     public static Integer sum (ArrayList<Integer> cards){
         int sum = 0;
@@ -80,6 +76,7 @@ public class Main {
         int dealerSum = 0;
         playerSum = sum(playerCards);
         dealerSum = sum(dealerCards);
+
         Scanner input = new Scanner(System.in);
         System.out.println("Your cards are: "+playerCards);
         System.out.println("The Dealer's cards are: "+dealerCards.get(0)+", ?");
@@ -91,14 +88,20 @@ public class Main {
             System.out.println("Your cards are: "+playerCards);
             System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
             hitAgain = input.nextInt();
+            playerSum = sum(playerCards);
         }
-
+        while (dealerSum<17){
+            givenCard = dealCard(mixedDeck);
+            dealerCards.add(givenCard);
+            dealerSum= sum(dealerCards);
+        }
         System.out.println("Your cards are: "+playerCards);
         System.out.println("The Dealer's cards are: "+dealerCards);
         System.out.println(result(playerSum,dealerSum));
+
+        //below checks who wins
         if (result(playerSum,dealerSum)==true){
             System.out.println("You win");
-
         }
         else {
             System.out.println("You lose");
@@ -106,3 +109,4 @@ public class Main {
         System.out.println("Your cards are: "+playerCards);
         System.out.println("The Dealer's cards are: "+dealerCards);
         }
+    }

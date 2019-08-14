@@ -47,12 +47,17 @@ public class Main {
 
         return win;
     }
-    public static Integer sum (ArrayList<Integer> cards){
+    public static Integer sums (ArrayList<Integer> cards){
         int sum=0;
         for (int i = 0; i<cards.size(); i++)
             sum= cards.get(i) + sum;
-        if (sum>21 && cards.contains(1))
-            sum = sum-10;
+        for (int b = 0; b <cards.size() ; b++) {
+            if (cards.get(b)==11 &&sum>21){
+                cards.set(b,1);
+                sum = sums(cards);
+                System.out.println(sum);
+            }
+        }
         return sum;
     }
 
@@ -73,8 +78,8 @@ public class Main {
             givenCard = dealCard(mixedDeck);
             dealerCards.add(givenCard);
         }
-        int playerSum = sum(playerCards);
-        int dealerSum = sum(dealerCards);
+        int playerSum = sums(playerCards);
+        int dealerSum = sums(dealerCards);
         if (playerSum==21){
             System.out.println("Yay you win! BLACKJACK");
         }
@@ -87,7 +92,7 @@ public class Main {
             while (hitAgain == 1 && notOver == true) {
                 givenCard = dealCard(mixedDeck);
                 playerCards.add(givenCard);
-                playerSum = sum(playerCards);
+                playerSum = sums(playerCards);
                 if (playerSum>21){
                     notOver = false;
                 }
@@ -100,7 +105,7 @@ public class Main {
             while (dealerSum<17 && notOver== true){
                 givenCard = dealCard(mixedDeck);
                 dealerCards.add(givenCard);
-                dealerSum= sum(dealerCards);
+                dealerSum= sums(dealerCards);
             }
             System.out.println(result(playerSum,dealerSum));
             //below checks who wins

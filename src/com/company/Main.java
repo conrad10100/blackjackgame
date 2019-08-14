@@ -1,4 +1,3 @@
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -16,46 +15,44 @@ public class Main {
     public static ArrayList<Integer> deckShuffle(int deckSizeVal){
         ArrayList<Integer> deckCombo = new ArrayList<Integer>();
         for (int i=0; i<deckSizeVal;i++)
-            for (int valOfCard=1; valOfCard<=13; valOfCard++) // Suit does not matter in blackjack for scoring
+            for (int valOfCard=2; valOfCard<=11; valOfCard++) // Suit does not matter in blackjack for scoring
                 deckCombo.add(valOfCard);
+            for (int repeat=0;repeat<deckSizeVal; repeat++ )
+            {
+                deckCombo.add(10);
+                deckCombo.add(10);
+                deckCombo.add(10);
+            }
         Collections.shuffle(deckCombo);
         System.out.println(deckCombo);
         return deckCombo;
     }
 
     public static Integer dealCard(ArrayList<Integer> mixedDeck){
-
-        ArrayList<Integer> cardJQK = new ArrayList<>();
-        cardJQK.add(11);
-        cardJQK.add(12);
-        cardJQK.add(13);
-        int dealt = mixedDeck.get(0);
+        int dealt;
+        dealt = mixedDeck.get(0);
         mixedDeck.remove(0);
-        if (cardJQK.contains(dealt))
-            dealt=10;
         return dealt;
     }
 
     public static boolean result ( int playerSum,  int dealerSum){
-        //First lets calculate player cards score
+        //comparing scores
         boolean win;
-        System.out.println(playerSum);
-
-        if (playerSum>=dealerSum && playerSum<22) { //checks if user has higher score and isn't busted
+        //System.out.println(playerSum);
+        if (((playerSum>=dealerSum && playerSum<22)||dealerSum>21)&&playerSum!=dealerSum) { //checks if user has higher score and isn't busted
             win = true;
         }
+        else
+            win = false;
 
-        int dealt = mixedDeck.get(0);
-        mixedDeck.remove(0);
-        return dealt;
+        return win;
     }
-
-
-
     public static Integer sum (ArrayList<Integer> cards){
-        int sum = 0;
+        int sum=0;
         for (int i = 0; i<cards.size(); i++)
             sum= cards.get(i) + sum;
+        if (sum>21 && cards.contains(1))
+            sum = sum-10;
         return sum;
     }
 
@@ -65,7 +62,7 @@ public class Main {
         ArrayList<Integer> mixedDeck = new ArrayList<Integer>();
         ArrayList<Integer> dealerCards = new ArrayList<Integer>(); //For now we'll only have two players dealer and player
         ArrayList<Integer> playerCards = new ArrayList<Integer>();
-
+        boolean notOver = true;
         int x=deckSize();
         int givenCard = 0;
         mixedDeck = deckShuffle(x);
@@ -76,33 +73,46 @@ public class Main {
             givenCard = dealCard(mixedDeck);
             dealerCards.add(givenCard);
         }
-        int playerSum = 0;
-        int dealerSum = 0;
-        playerSum = sum(playerCards);
-        dealerSum = sum(dealerCards);
-        Scanner input = new Scanner(System.in);
-        System.out.println("Your cards are: "+playerCards);
-        System.out.println("The Dealer's cards are: "+dealerCards.get(0)+", ?");
-        System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
-        int hitAgain = input.nextInt();
-        while (hitAgain == 1) {
-            givenCard = dealCard(mixedDeck);
-            playerCards.add(givenCard);
-            System.out.println("Your cards are: "+playerCards);
-            System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
-            hitAgain = input.nextInt();
-        }
-
-        System.out.println("Your cards are: "+playerCards);
-        System.out.println("The Dealer's cards are: "+dealerCards);
-        System.out.println(result(playerSum,dealerSum));
-        if (result(playerSum,dealerSum)==true){
-            System.out.println("You win");
-
+        int playerSum = sum(playerCards);
+        int dealerSum = sum(dealerCards);
+        if (playerSum==21){
+            System.out.println("Yay you win! BLACKJACK");
         }
         else {
-            System.out.println("You lose");
+            Scanner input = new Scanner(System.in);
+            System.out.println("Your cards are: "+playerCards);
+            System.out.println("The Dealer's cards are: ?, "+dealerCards.get(1));
+            System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
+            int hitAgain = input.nextInt();
+            while (hitAgain == 1 && notOver == true) {
+                givenCard = dealCard(mixedDeck);
+                playerCards.add(givenCard);
+                playerSum = sum(playerCards);
+                if (playerSum>21){
+                    notOver = false;
+                }
+                else {
+                    System.out.println("Your cards are: "+playerCards);
+                    System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
+                    hitAgain = input.nextInt();
+                }
+            }
+            while (dealerSum<17 && notOver== true){
+                givenCard = dealCard(mixedDeck);
+                dealerCards.add(givenCard);
+                dealerSum= sum(dealerCards);
+            }
+            System.out.println(result(playerSum,dealerSum));
+            //below checks who wins
+            if (result(playerSum,dealerSum)==true){
+                System.out.println("You win");
+            }
+            else {
+                System.out.println("You lose");
+            }
+            System.out.println("Your cards were: "+playerCards);
+            System.out.println("The Dealer's cards were: "+dealerCards);
+
         }
-        System.out.println("Your cards are: "+playerCards);
-        System.out.println("The Dealer's cards are: "+dealerCards);
-        }
+    }
+}

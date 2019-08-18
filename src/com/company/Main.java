@@ -1,8 +1,7 @@
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.ArrayList;
-public class Main {
-
+public class main {
     public static Integer deckSize()
     {
         Scanner input = new Scanner(System.in);
@@ -17,12 +16,12 @@ public class Main {
         for (int i=0; i<deckSizeVal;i++)
             for (int valOfCard=2; valOfCard<=11; valOfCard++) // Suit does not matter in blackjack for scoring
                 deckCombo.add(valOfCard);
-            for (int repeat=0;repeat<deckSizeVal; repeat++ )
-            {
-                deckCombo.add(10);
-                deckCombo.add(10);
-                deckCombo.add(10);
-            }
+        for (int repeat=0;repeat<deckSizeVal; repeat++ )
+        {
+            deckCombo.add(10);
+            deckCombo.add(10);
+            deckCombo.add(10);
+        }
         Collections.shuffle(deckCombo);
         System.out.println(deckCombo);
         return deckCombo;
@@ -60,7 +59,9 @@ public class Main {
         }
         return sum;
     }
-
+    //public Label(String strLabel, int valueDeck);{
+    //   return ("hi");
+    //}
     public static void main(String[] args) {
         /*Falssview Casino rules: 6 decks, 80% Pen and dealer stays on 17
          */
@@ -82,6 +83,7 @@ public class Main {
         int dealerSum = sums(dealerCards);
         if (playerSum==21){
             System.out.println("Yay you win! BLACKJACK");
+            System.out.println("Your cards were: "+playerCards);
         }
         else {
             Scanner input = new Scanner(System.in);
@@ -109,15 +111,17 @@ public class Main {
             }
             System.out.println(result(playerSum,dealerSum));
             //below checks who wins
-            if (result(playerSum,dealerSum)==true){
+            if (result(playerSum,dealerSum)==true && playerSum!=dealerSum){
                 System.out.println("You win");
             }
-            else {
+            else if(result(playerSum,dealerSum) == false && playerSum!=dealerSum) {
                 System.out.println("You lose");
+            }
+            else {
+                System.out.println("You tied");
             }
             System.out.println("Your cards were: "+playerCards);
             System.out.println("The Dealer's cards were: "+dealerCards);
-
         }
     }
 }

@@ -1,7 +1,7 @@
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.ArrayList;
-public class main {
+public class Main {
     public static Integer deckSize()
     {
         Scanner input = new Scanner(System.in);
@@ -14,6 +14,7 @@ public class main {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter how many games you want to play: ");
         int numberGames = input.nextInt();
+
         System.out.println("You want to play this many games: "+ numberGames);
         return numberGames;
     }
@@ -80,8 +81,9 @@ public class main {
         int givenCard = 0;
         mixedDeck = deckShuffle(x);
         int oGmixedDeck=mixedDeck.size();
+        int winCounter=0;
         for (int i = 0; i <gameCount ; i++) {
-            if (mixedDeck.size()<=oGmixedDeck*0.8){
+            if (mixedDeck.size()<=oGmixedDeck *0.8){
                 mixedDeck=deckShuffle(x);
             }
             System.out.println(mixedDeck.size());
@@ -104,7 +106,7 @@ public class main {
             else {
                 Scanner input = new Scanner(System.in);
                 System.out.println("Your cards are: "+playerCards);
-                System.out.println("The Dealer's cards are: ?, "+dealerCards.get(1));
+                System.out.println("The Dealer's cards are: "+dealerCards.get(0)+" ? ");
                 System.out.println("Would you like to hit? Type 1"); //Change it to a button in future when add gui
                 int hitAgain = input.nextInt();
                 while (hitAgain == 1 && notOver == true) {
@@ -129,6 +131,7 @@ public class main {
                 //below checks who wins
                 if (result(playerSum,dealerSum)==true && playerSum!=dealerSum){
                     System.out.println("You win");
+                    winCounter= winCounter+1;
                 }
                 else if(result(playerSum,dealerSum) == false && playerSum!=dealerSum) {
                     System.out.println("You lose");
@@ -140,6 +143,6 @@ public class main {
                 System.out.println("The Dealer's cards were: "+dealerCards+"\n");
             }
         }
-
+        System.out.println("You won this many games: "+winCounter+" Out of " + gameCount);
     }
 }
